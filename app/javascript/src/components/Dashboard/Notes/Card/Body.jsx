@@ -3,7 +3,14 @@ import React from "react";
 import { MenuVertical } from "neetoicons";
 import { Typography, Dropdown } from "neetoui/v2";
 
-const Body = ({ title, description }) => {
+const Body = ({ note, setSelectedNoteId, setShowDeleteAlert }) => {
+  const { id, title, description } = note;
+
+  const handleDelete = id => {
+    setSelectedNoteId(id);
+    setShowDeleteAlert(true);
+  };
+
   return (
     <div className="space-y-3 py-4">
       <div className="flex justify-between">
@@ -16,7 +23,7 @@ const Body = ({ title, description }) => {
           position="bottom-end"
         >
           <li>Edit</li>
-          <li>Delete</li>
+          <li onClick={() => handleDelete(id)}>Delete</li>
         </Dropdown>
       </div>
       <Typography style="body2">{description}</Typography>

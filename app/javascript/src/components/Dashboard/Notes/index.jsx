@@ -8,12 +8,16 @@ import { Container, Header } from "neetoui/v2/layouts";
 import EmptyState from "components/Common/EmptyState";
 
 import Card from "./Card";
+import DeleteAlert from "./DeleteAlert";
 import Menu from "./Menu";
 import { SAMPLE_NOTES } from "./sampleNotes";
 
 const Notes = () => {
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [showMenu, setShowMenu] = useState(true);
+  const [selectedNoteId, setSelectedNoteId] = useState();
+  const [notes, setNotes] = useState(SAMPLE_NOTES);
 
   return (
     <>
@@ -28,10 +32,16 @@ const Notes = () => {
             onChange: e => setSearchTerm(e.target.value),
           }}
         />
-        {SAMPLE_NOTES.length ? (
+
+        {notes.length ? (
           <div className="w-full space-y-6">
-            {SAMPLE_NOTES.map(note => (
-              <Card key={note.id} note={note} />
+            {notes.map(note => (
+              <Card
+                key={note.id}
+                note={note}
+                setSelectedNoteId={setSelectedNoteId}
+                setShowDeleteAlert={setShowDeleteAlert}
+              />
             ))}
           </div>
         ) : (
@@ -40,6 +50,14 @@ const Notes = () => {
             title="Looks like you don't have any notes!"
             subtitle="Add your notes to send customized emails to them."
             primaryActionLabel="Add New Note"
+          />
+        )}
+
+        {showDeleteAlert && (
+          <DeleteAlert
+            selectedNoteId={selectedNoteId}
+            onClose={() => setShowDeleteAlert(false)}
+            setNotes={setNotes}
           />
         )}
       </Container>
