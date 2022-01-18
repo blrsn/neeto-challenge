@@ -14,6 +14,8 @@ import { APP_NAME, SIDENAV_LINKS } from "./constants";
 const Sidenav = () => {
   const history = useHistory();
   const authDispatch = useAuthDispatch();
+  const userProfileImageUrl =
+    "https://randomuser.me/api/portraits/thumb/women/10.jpg";
 
   const { user } = useUserState();
 
@@ -56,7 +58,7 @@ const Sidenav = () => {
       }}
       profileInfo={{
         name: `${user.first_name} ${user.last_name}`,
-        imageUrl: user.profile_image_path,
+        imageUrl: userProfileImageUrl,
         email: user.email,
         dropdownProps,
       }}
