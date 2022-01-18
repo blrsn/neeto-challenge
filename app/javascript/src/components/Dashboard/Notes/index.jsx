@@ -10,6 +10,7 @@ import EmptyState from "components/Common/EmptyState";
 import Card from "./Card";
 import DeleteAlert from "./DeleteAlert";
 import Menu from "./Menu";
+import NewNotePane from "./Pane/CreateNote";
 import { SAMPLE_NOTES } from "./sampleNotes";
 
 const Notes = () => {
@@ -17,6 +18,7 @@ const Notes = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showMenu, setShowMenu] = useState(true);
   const [selectedNoteId, setSelectedNoteId] = useState();
+  const [showNewNotePane, setShowNewNotePane] = useState(false);
   const [notes, setNotes] = useState(SAMPLE_NOTES);
 
   return (
@@ -26,7 +28,9 @@ const Notes = () => {
         <Header
           title="All Notes"
           menuBarToggle={() => setShowMenu(!showMenu)}
-          actionBlock={<Button label="Add Note" icon={Plus} />}
+          actionBlock={
+            <Button label="Add Note" icon={Plus} onClick={setShowNewNotePane} />
+          }
           searchProps={{
             value: searchTerm,
             onChange: e => setSearchTerm(e.target.value),
@@ -52,7 +56,12 @@ const Notes = () => {
             primaryActionLabel="Add New Note"
           />
         )}
-
+        <NewNotePane
+          showPane={showNewNotePane}
+          setShowPane={setShowNewNotePane}
+          setNotes={setNotes}
+          notes={notes}
+        />
         {showDeleteAlert && (
           <DeleteAlert
             selectedNoteId={selectedNoteId}

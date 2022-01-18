@@ -2,27 +2,14 @@ import React, { useState } from "react";
 
 import { Formik, Form } from "formik";
 import { Button, Pane } from "neetoui/v2";
-import { Input, Textarea } from "neetoui/v2/formik";
+import { Input, Textarea, Select } from "neetoui/v2/formik";
 
-import notesApi from "apis/notes";
 import formValidationSchemas from "constants/formValidationSchemas";
 
-export default function NoteForm({ onClose, refetch, note, isEdit }) {
+import { CONTACT_OPTIONS, TAG_OPTIONS } from "../constants";
+
+export default function NoteForm({ onClose, handleSubmit, note, isEdit }) {
   const [submitted, setSubmitted] = useState(false);
-  const handleSubmit = async values => {
-    try {
-      setSubmitted(true);
-      if (isEdit) {
-        await notesApi.update(note.id, values);
-      } else {
-        await notesApi.create(values);
-      }
-      refetch();
-      onClose();
-    } catch (err) {
-      logger.error(err);
-    }
-  };
 
   return (
     <Formik
@@ -46,7 +33,24 @@ export default function NoteForm({ onClose, refetch, note, isEdit }) {
               name="description"
               className="flex-grow-0 w-full"
               rows={8}
+              placeholder="Enter note description"
               required
+            />
+            <Select
+              label="Assigned Contact"
+              name="assignedContact"
+              placeholder="Select Contact"
+              options={CONTACT_OPTIONS}
+              required
+              className="flex-grow-0 w-full"
+            />
+            <Select
+              label="Tags"
+              name="tag"
+              placeholder="Select Role"
+              options={TAG_OPTIONS}
+              required
+              className="flex-grow-0 w-full"
             />
           </Pane.Body>
           <Pane.Footer>
